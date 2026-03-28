@@ -6,6 +6,11 @@ import connectPgSimple from "connect-pg-simple";
 import router from "./routes";
 import { logger } from "./lib/logger";
 import { pool } from "@workspace/db";
+import path from "path";
+import { fileURLToPath } from "url";
+import { existsSync } from "fs";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PgSession = connectPgSimple(session);
 
@@ -59,5 +64,14 @@ app.use(
 );
 
 app.use("/api", router);
+
+const dashboardDist = path.resolve(__dirname, "../../dashboard/dist/public");
+
+if (existsSync(dashboardDist)) {
+  app.use(express.static(dashboardDist));
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(dashboardDist, "index.html"));
+  });
+}
 
 export default app;
