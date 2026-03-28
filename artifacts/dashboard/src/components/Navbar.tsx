@@ -12,6 +12,7 @@ const NAV_ITEMS = [
 export function Navbar() {
   const [location] = useLocation();
   const { user, logout } = useAuth();
+  const accentColor = user?.avatarColor || "#6366f1";
 
   const handleLogout = async () => {
     try {
@@ -27,31 +28,36 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="text-xl font-bold tracking-tight flex items-center gap-2">
-          <span className="bg-primary text-primary-foreground w-8 h-8 rounded-lg flex items-center justify-center text-lg shadow-lg shadow-primary/20">
+          <span
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-lg"
+            style={{ backgroundColor: accentColor }}
+          >
             Y
           </span>
           Yavela
         </Link>
 
-        {/* Center Nav — pill container with animated active indicator */}
+        {/* Center Nav */}
         <div className="hidden md:flex items-center gap-1 bg-card border border-border rounded-full p-1 shadow-sm">
           {NAV_ITEMS.map((nav) => {
             const isActive = location === nav.href;
             return (
               <Link key={nav.href} href={nav.href}>
-                <div className="relative px-4 py-1.5 cursor-pointer">
-                  {/* Animated pill background */}
+                <div className="relative px-4 py-1.5 cursor-pointer select-none">
                   {isActive && (
                     <motion.div
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-secondary shadow-sm ring-1 ring-border/60"
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        backgroundColor: accentColor,
+                        boxShadow: `0 0 12px 2px ${accentColor}55`,
+                      }}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
                   <span
-                    className={`relative z-10 text-sm font-medium transition-colors select-none ${
-                      isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                    }`}
+                    className="relative z-10 text-sm font-semibold transition-colors"
+                    style={{ color: isActive ? "#fff" : undefined }}
                   >
                     {nav.label}
                   </span>
@@ -68,7 +74,7 @@ export function Navbar() {
               <DropdownMenuTrigger className="flex items-center gap-2 outline-none group hover:bg-secondary/50 p-1.5 pr-3 rounded-full transition-colors border border-transparent hover:border-border">
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold shadow-inner"
-                  style={{ backgroundColor: user.avatarColor || "#6366f1" }}
+                  style={{ backgroundColor: accentColor }}
                 >
                   {(user.displayName || user.username).charAt(0).toUpperCase()}
                 </div>

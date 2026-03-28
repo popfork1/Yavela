@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Navbar } from "../components/Navbar";
+import { useAuth } from "../hooks/useAuth";
 import { Code2, BookOpen, Settings, Zap, Download, ExternalLink } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { CardDescription, CardFooter } from "../components/ui/card";
@@ -15,7 +16,7 @@ const tools = [
     buttonIcon: Download,
     link: "https://files.yavela.xyz/data/Yavela.zip",
     color: "text-blue-400",
-    bg: "bg-blue-400/10"
+    bg: "bg-blue-400/10",
   },
   {
     id: "docs",
@@ -26,7 +27,7 @@ const tools = [
     buttonIcon: ExternalLink,
     link: "https://www.yavela.xyz/docs",
     color: "text-purple-400",
-    bg: "bg-purple-400/10"
+    bg: "bg-purple-400/10",
   },
   {
     id: "api-not-based",
@@ -37,7 +38,7 @@ const tools = [
     buttonIcon: Download,
     link: "https://files.yavela.xyz/data/api/yavAPI.7z",
     color: "text-emerald-400",
-    bg: "bg-emerald-400/10"
+    bg: "bg-emerald-400/10",
   },
   {
     id: "api-velocity",
@@ -48,39 +49,33 @@ const tools = [
     buttonIcon: Download,
     link: "https://files.yavela.xyz/data/api/velocity/yavAPI.dll",
     color: "text-amber-400",
-    bg: "bg-amber-400/10"
-  }
+    bg: "bg-amber-400/10",
+  },
 ];
 
 const container = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 type SpotlightCardProps = {
   tool: typeof tools[0];
+  accentColor: string;
 };
 
-function SpotlightCard({ tool }: SpotlightCardProps) {
+function SpotlightCard({ tool, accentColor }: SpotlightCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [spotlight, setSpotlight] = useState({ x: 0, y: 0, opacity: 0 });
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
-    setSpotlight({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      opacity: 1,
-    });
+    setSpotlight({ x: e.clientX - rect.left, y: e.clientY - rect.top, opacity: 1 });
   }
 
   function handleMouseLeave() {
@@ -100,33 +95,29 @@ function SpotlightCard({ tool }: SpotlightCardProps) {
       className="relative h-full rounded-xl border border-border/50 bg-card overflow-hidden shadow-lg flex flex-col group cursor-default"
       style={{ willChange: "transform" }}
     >
-      {/* Spotlight glow */}
+      {/* Spotlight glow — uses the user's accent color */}
       <div
         className="pointer-events-none absolute inset-0 transition-opacity duration-300"
         style={{
           opacity: spotlight.opacity,
-          background: `radial-gradient(300px circle at ${spotlight.x}px ${spotlight.y}px, rgba(255,255,255,0.08), transparent 70%)`,
+          background: `radial-gradient(280px circle at ${spotlight.x}px ${spotlight.y}px, ${accentColor}30, transparent 70%)`,
         }}
       />
 
       {/* Card content */}
       <div className="relative z-10 p-6 flex flex-col h-full">
-        {/* Icon */}
         <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${tool.bg} ${tool.color}`}>
           <Icon className="w-6 h-6" />
         </div>
 
-        {/* Title */}
-        <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+        <h3 className="text-xl font-semibold mb-2 group-hover:text-foreground transition-colors">
           {tool.title}
         </h3>
 
-        {/* Description */}
         <CardDescription className="text-base text-muted-foreground/80 leading-relaxed flex-1">
           {tool.description}
         </CardDescription>
 
-        {/* Button */}
         <CardFooter className="px-0 pt-5 mt-auto border-t border-border/10">
           <Button asChild className="w-full group/btn relative overflow-hidden" variant="secondary">
             <a href={tool.link}>
@@ -143,6 +134,9 @@ function SpotlightCard({ tool }: SpotlightCardProps) {
 }
 
 export function Dashboard() {
+  const { user } = useAuth();
+  const accentColor = user?.avatarColor || "#6366f1";
+
   return (
     <div className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
       <Navbar />
@@ -163,14 +157,14 @@ export function Dashboard() {
         >
           {tools.map((tool) => (
             <motion.div key={tool.id} variants={item} className="h-full">
-              <SpotlightCard tool={tool} />
+              <SpotlightCard tool={tool} accentColor={accentColor} />
             </motion.div>
           ))}
         </motion.div>
       </main>
 
       <footer className="py-8 border-t border-border/50 text-center text-muted-foreground text-sm">
-        <p>© 2026 Yavela · All rights reserved</p>
+        <p>© 2025 Yavela · All rights reserved</p>
       </footer>
     </div>
   );
