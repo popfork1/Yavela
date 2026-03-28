@@ -91,11 +91,14 @@ function SpotlightCard({ tool }: SpotlightCardProps) {
   const BtnIcon = tool.buttonIcon;
 
   return (
-    <div
+    <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative h-full rounded-xl border border-border/50 bg-card overflow-hidden shadow-lg flex flex-col group transition-all duration-300 hover:border-border"
+      whileHover={{ y: -6, scale: 1.02, boxShadow: "0 24px 48px -8px rgba(0,0,0,0.5)" }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className="relative h-full rounded-xl border border-border/50 bg-card overflow-hidden shadow-lg flex flex-col group cursor-default"
+      style={{ willChange: "transform" }}
     >
       {/* Spotlight glow */}
       <div
@@ -135,7 +138,7 @@ function SpotlightCard({ tool }: SpotlightCardProps) {
           </Button>
         </CardFooter>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -167,7 +170,7 @@ export function Dashboard() {
       </main>
 
       <footer className="py-8 border-t border-border/50 text-center text-muted-foreground text-sm">
-        <p>© 2025 Yavela · All rights reserved</p>
+        <p>© 2026 Yavela · All rights reserved</p>
       </footer>
     </div>
   );
