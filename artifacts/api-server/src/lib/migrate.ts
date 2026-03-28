@@ -12,17 +12,6 @@ export async function runMigrations(): Promise<void> {
         avatar_color TEXT NOT NULL DEFAULT '#6366f1',
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
       );
-
-      CREATE TABLE IF NOT EXISTS bookmarks (
-        id SERIAL PRIMARY KEY,
-        title TEXT NOT NULL,
-        url TEXT NOT NULL,
-        description TEXT,
-        category TEXT,
-        icon TEXT,
-        color TEXT,
-        created_at TIMESTAMP NOT NULL DEFAULT NOW()
-      );
     `);
     console.log("Database tables ready");
   } finally {
