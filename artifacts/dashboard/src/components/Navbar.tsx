@@ -10,7 +10,7 @@ const NAV_ITEMS = [
 ];
 
 export function Navbar() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const { user, logout } = useAuth();
   const accentColor = user?.avatarColor || "#6366f1";
 
@@ -83,7 +83,7 @@ export function Navbar() {
                 <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem className="cursor-pointer" onClick={() => window.location.href = "/settings"}>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => setLocation("/settings")}>
                   <UserIcon className="w-4 h-4 mr-2" />
                   Profile Settings
                 </DropdownMenuItem>
