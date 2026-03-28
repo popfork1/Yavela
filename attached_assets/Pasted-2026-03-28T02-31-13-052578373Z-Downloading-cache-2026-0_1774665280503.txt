@@ -1,0 +1,44 @@
+2026-03-28T02:31:13.052578373Z ==> Downloading cache...
+2026-03-28T02:31:13.097976708Z ==> It looks like we don't have access to your repo, but we'll try to clone it anyway.
+2026-03-28T02:31:13.097994099Z ==> Cloning from https://github.com/popfork1/Yavela
+2026-03-28T02:31:13.708367879Z ==> Checking out commit f71f460eda03b104d64cf38f2dfb4ccaf566df30 in branch main
+2026-03-28T02:31:23.194749807Z ==> Downloaded 137MB in 3s. Extraction took 7s.
+2026-03-28T02:31:29.094946658Z ==> Using Node.js version 22.22.0 (default)
+2026-03-28T02:31:29.119287268Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-03-28T02:31:29.230190786Z ==> Running build command 'pnpm install && pnpm --filter @workspace/api-server build'...
+2026-03-28T02:31:31.330090931Z 
+2026-03-28T02:31:31.330120442Z > @workspace/api-server@0.0.0 build /opt/render/project/src/artifacts/api-server
+2026-03-28T02:31:31.330127292Z > node ./build.mjs
+2026-03-28T02:31:31.330131182Z 
+2026-03-28T02:31:31.782698719Z 
+2026-03-28T02:31:31.78272312Z   dist/index.mjs                       2.2mb ⚠️
+2026-03-28T02:31:31.78272927Z   dist/pino-worker.mjs               153.4kb
+2026-03-28T02:31:31.78273215Z   dist/pino-file.mjs                 142.1kb
+2026-03-28T02:31:31.7827348Z   dist/pino-pretty.mjs               114.6kb
+2026-03-28T02:31:31.78273732Z   dist/thread-stream-worker.mjs        7.3kb
+2026-03-28T02:31:31.78274053Z   dist/index.mjs.map                   3.8mb
+2026-03-28T02:31:31.78274468Z   dist/pino-worker.mjs.map           256.9kb
+2026-03-28T02:31:31.7827485Z   dist/pino-file.mjs.map             229.0kb
+2026-03-28T02:31:31.782752241Z   dist/pino-pretty.mjs.map           203.9kb
+2026-03-28T02:31:31.782756261Z   dist/thread-stream-worker.mjs.map   12.0kb
+2026-03-28T02:31:31.782759421Z 
+2026-03-28T02:31:31.782764161Z ⚡ Done in 396ms
+2026-03-28T02:31:32.906819677Z ==> Uploading build...
+2026-03-28T02:31:43.56278963Z ==> Uploaded in 6.1s. Compression took 4.6s
+2026-03-28T02:31:43.593621425Z ==> Build successful 🎉
+2026-03-28T02:31:45.525652362Z ==> Deploying...
+2026-03-28T02:31:45.602253399Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-03-28T02:32:12.204638235Z ==> Running 'pnpm --filter @workspace/api-server start'
+2026-03-28T02:32:16.097277528Z 
+2026-03-28T02:32:16.097296848Z > @workspace/api-server@0.0.0 start /opt/render/project/src/artifacts/api-server
+2026-03-28T02:32:16.097301968Z > node --enable-source-maps ./dist/index.mjs
+2026-03-28T02:32:16.097304618Z 
+2026-03-28T02:32:17.596567242Z {"level":30,"time":1774665137595,"pid":81,"hostname":"srv-d73i76juibrs7392iq0g-hibernate-5c5bccb84f-9qrxt","port":10000,"msg":"Server listening"}
+2026-03-28T02:32:18.174825907Z {"level":30,"time":1774665138174,"pid":81,"hostname":"srv-d73i76juibrs7392iq0g-hibernate-5c5bccb84f-9qrxt","req":{"id":1,"method":"HEAD","url":"/"},"res":{"statusCode":404},"responseTime":7,"msg":"request completed"}
+2026-03-28T02:32:28.570434551Z ==> Your service is live 🎉
+2026-03-28T02:32:28.949605112Z ==> 
+2026-03-28T02:32:28.951888493Z ==> ///////////////////////////////////////////////////////////
+2026-03-28T02:32:28.954161443Z ==> 
+2026-03-28T02:32:28.956431463Z ==> Available at your primary URL https://yavela.onrender.com
+2026-03-28T02:32:28.958288744Z ==> 
+2026-03-28T02:32:28.960786439Z ==> ///////////////////////////////////////////////////////////
