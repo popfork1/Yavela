@@ -3,7 +3,6 @@ import { useAuth } from "../hooks/useAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { ChevronDown, LogOut, User as UserIcon } from "lucide-react";
 import { motion } from "framer-motion";
-import yavelaLogo from "@assets/yavela_1774657913552.png";
 
 const NAV_ITEMS = [
   { href: "/", label: "Dashboard" },
@@ -30,7 +29,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="text-xl font-bold tracking-tight flex items-center gap-2">
           <img
-            src={yavelaLogo}
+            src={`${import.meta.env.BASE_URL}yavela-logo.png`}
             alt="Yavela"
             className="w-8 h-8 object-contain mix-blend-screen"
           />
