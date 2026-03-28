@@ -6,4 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./bookmark";
+export * from "./createBookmarkRequest";
 export * from "./healthStatus";
+export * from "./updateBookmarkRequest";

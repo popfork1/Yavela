@@ -14,3 +14,64 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary List all bookmarks
+ */
+export const ListBookmarksResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  url: zod.string(),
+  description: zod.string().nullish(),
+  category: zod.string().nullish(),
+  icon: zod.string().nullish(),
+  color: zod.string().nullish(),
+  createdAt: zod.date(),
+});
+export const ListBookmarksResponse = zod.array(ListBookmarksResponseItem);
+
+/**
+ * @summary Create a new bookmark
+ */
+export const CreateBookmarkBody = zod.object({
+  title: zod.string(),
+  url: zod.string(),
+  description: zod.string().nullish(),
+  category: zod.string().nullish(),
+  icon: zod.string().nullish(),
+  color: zod.string().nullish(),
+});
+
+/**
+ * @summary Delete a bookmark
+ */
+export const DeleteBookmarkParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Update a bookmark
+ */
+export const UpdateBookmarkParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateBookmarkBody = zod.object({
+  title: zod.string().optional(),
+  url: zod.string().optional(),
+  description: zod.string().nullish(),
+  category: zod.string().nullish(),
+  icon: zod.string().nullish(),
+  color: zod.string().nullish(),
+});
+
+export const UpdateBookmarkResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  url: zod.string(),
+  description: zod.string().nullish(),
+  category: zod.string().nullish(),
+  icon: zod.string().nullish(),
+  color: zod.string().nullish(),
+  createdAt: zod.date(),
+});

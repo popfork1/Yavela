@@ -1,0 +1,19 @@
+packages:
+  "framer-motion": "For premium page transitions, stagger animations, and glassmorphism hover effects."
+  "date-fns": "For formatting the live clock and date displays."
+  "react-hook-form": "For robust form state management in the bookmark modal."
+  "@hookform/resolvers": "For Zod validation integration with react-hook-form."
+  "zod": "For bookmark form validation schema."
+  "lucide-react": "For beautiful, consistent iconography across the dashboard."
+  "clsx": "Utility for conditionally joining class names."
+  "tailwind-merge": "Utility to merge tailwind classes without style conflicts."
+
+images:
+  - path: "artifacts/dashboard/public/images/glass-texture.png"
+    description: "A dark, highly abstract, subtle noise texture overlay with faint iridescent colorful light leaks (deep purple, blue, and teal) for a premium dark mode glassmorphism background."
+    aspect_ratio: "16:9"
+
+notes:
+  - Using generated React Query hooks from @workspace/api-client-react for data fetching.
+  - The entire application is styled as a dark-mode professional dashboard by default.
+  - LocalStorage is used for the quick notes widget to keep it fast and responsive.

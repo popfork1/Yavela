@@ -5,18 +5,26 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  Bookmark,
+  CreateBookmarkRequest,
+  HealthStatus,
+  UpdateBookmarkRequest,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +107,335 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary List all bookmarks
+ */
+export const getListBookmarksUrl = () => {
+  return `/api/bookmarks`;
+};
+
+export const listBookmarks = async (
+  options?: RequestInit,
+): Promise<Bookmark[]> => {
+  return customFetch<Bookmark[]>(getListBookmarksUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListBookmarksQueryKey = () => {
+  return [`/api/bookmarks`] as const;
+};
+
+export const getListBookmarksQueryOptions = <
+  TData = Awaited<ReturnType<typeof listBookmarks>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listBookmarks>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListBookmarksQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listBookmarks>>> = ({
+    signal,
+  }) => listBookmarks({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listBookmarks>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListBookmarksQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listBookmarks>>
+>;
+export type ListBookmarksQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all bookmarks
+ */
+
+export function useListBookmarks<
+  TData = Awaited<ReturnType<typeof listBookmarks>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listBookmarks>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListBookmarksQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create a new bookmark
+ */
+export const getCreateBookmarkUrl = () => {
+  return `/api/bookmarks`;
+};
+
+export const createBookmark = async (
+  createBookmarkRequest: CreateBookmarkRequest,
+  options?: RequestInit,
+): Promise<Bookmark> => {
+  return customFetch<Bookmark>(getCreateBookmarkUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createBookmarkRequest),
+  });
+};
+
+export const getCreateBookmarkMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBookmark>>,
+    TError,
+    { data: BodyType<CreateBookmarkRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createBookmark>>,
+  TError,
+  { data: BodyType<CreateBookmarkRequest> },
+  TContext
+> => {
+  const mutationKey = ["createBookmark"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createBookmark>>,
+    { data: BodyType<CreateBookmarkRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createBookmark(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateBookmarkMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createBookmark>>
+>;
+export type CreateBookmarkMutationBody = BodyType<CreateBookmarkRequest>;
+export type CreateBookmarkMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create a new bookmark
+ */
+export const useCreateBookmark = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBookmark>>,
+    TError,
+    { data: BodyType<CreateBookmarkRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createBookmark>>,
+  TError,
+  { data: BodyType<CreateBookmarkRequest> },
+  TContext
+> => {
+  return useMutation(getCreateBookmarkMutationOptions(options));
+};
+
+/**
+ * @summary Delete a bookmark
+ */
+export const getDeleteBookmarkUrl = (id: number) => {
+  return `/api/bookmarks/${id}`;
+};
+
+export const deleteBookmark = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteBookmarkUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteBookmarkMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteBookmark>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteBookmark>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteBookmark"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteBookmark>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return deleteBookmark(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteBookmarkMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteBookmark>>
+>;
+
+export type DeleteBookmarkMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Delete a bookmark
+ */
+export const useDeleteBookmark = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteBookmark>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteBookmark>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteBookmarkMutationOptions(options));
+};
+
+/**
+ * @summary Update a bookmark
+ */
+export const getUpdateBookmarkUrl = (id: number) => {
+  return `/api/bookmarks/${id}`;
+};
+
+export const updateBookmark = async (
+  id: number,
+  updateBookmarkRequest: UpdateBookmarkRequest,
+  options?: RequestInit,
+): Promise<Bookmark> => {
+  return customFetch<Bookmark>(getUpdateBookmarkUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updateBookmarkRequest),
+  });
+};
+
+export const getUpdateBookmarkMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateBookmark>>,
+    TError,
+    { id: number; data: BodyType<UpdateBookmarkRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateBookmark>>,
+  TError,
+  { id: number; data: BodyType<UpdateBookmarkRequest> },
+  TContext
+> => {
+  const mutationKey = ["updateBookmark"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateBookmark>>,
+    { id: number; data: BodyType<UpdateBookmarkRequest> }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return updateBookmark(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateBookmarkMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateBookmark>>
+>;
+export type UpdateBookmarkMutationBody = BodyType<UpdateBookmarkRequest>;
+export type UpdateBookmarkMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Update a bookmark
+ */
+export const useUpdateBookmark = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateBookmark>>,
+    TError,
+    { id: number; data: BodyType<UpdateBookmarkRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateBookmark>>,
+  TError,
+  { id: number; data: BodyType<UpdateBookmarkRequest> },
+  TContext
+> => {
+  return useMutation(getUpdateBookmarkMutationOptions(options));
+};

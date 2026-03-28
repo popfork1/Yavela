@@ -8,3 +8,32 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface Bookmark {
+  id: number;
+  title: string;
+  url: string;
+  description?: string | null;
+  category?: string | null;
+  icon?: string | null;
+  color?: string | null;
+  createdAt: string;
+}
+
+export interface CreateBookmarkRequest {
+  title: string;
+  url: string;
+  description?: string | null;
+  category?: string | null;
+  icon?: string | null;
+  color?: string | null;
+}
+
+export interface UpdateBookmarkRequest {
+  title?: string;
+  url?: string;
+  description?: string | null;
+  category?: string | null;
+  icon?: string | null;
+  color?: string | null;
+}
