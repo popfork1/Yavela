@@ -177,7 +177,7 @@ export function Settings() {
       </main>
 
       <footer className="py-8 border-t border-border/50 text-center text-muted-foreground text-sm">
-        <p>© 2025 Yavela · All rights reserved</p>
+        <p>© 2026 Yavela · All rights reserved</p>
       </footer>
     </div>
   );
