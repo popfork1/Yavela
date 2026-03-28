@@ -9,15 +9,16 @@ servers:
 tags:
   - name: health
     description: Health operations
-  - name: bookmarks
-    description: Bookmark management
+  - name: auth
+    description: Authentication
+  - name: users
+    description: User management
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -25,74 +26,114 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
-  /bookmarks:
-    get:
-      operationId: listBookmarks
-      tags: [bookmarks]
-      summary: List all bookmarks
-      responses:
-        "200":
-          description: List of bookmarks
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Bookmark"
+  /auth/signup:
     post:
-      operationId: createBookmark
-      tags: [bookmarks]
-      summary: Create a new bookmark
+      operationId: signup
+      tags: [auth]
+      summary: Create a new account
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateBookmarkRequest"
+              $ref: "#/components/schemas/SignupRequest"
       responses:
         "201":
-          description: Created bookmark
+          description: Account created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Bookmark"
-  /bookmarks/{id}:
-    delete:
-      operationId: deleteBookmark
-      tags: [bookmarks]
-      summary: Delete a bookmark
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "204":
-          description: Deleted
-    patch:
-      operationId: updateBookmark
-      tags: [bookmarks]
-      summary: Update a bookmark
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateBookmarkRequest"
+              $ref: "#/components/schemas/LoginRequest"
       responses:
         "200":
-          description: Updated bookmark
+          description: Logged in
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Bookmark"
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Log out
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/me:
+    patch:
+      operationId: updateMe
+      tags: [users]
+      summary: Update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -102,73 +143,79 @@ components:
           type: string
       required:
         - status
-    Bookmark:
+    User:
       type: object
       properties:
         id:
           type: integer
-        title:
+        username:
           type: string
-        url:
+        displayName:
           type: string
-        description:
+        avatarColor:
           type: string
-          nullable: true
-        category:
-          type: string
-          nullable: true
-        icon:
-          type: string
-          nullable: true
-        color:
-          type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time
       required:
         - id
-        - title
-        - url
+        - username
+        - displayName
+        - avatarColor
         - createdAt
-    CreateBookmarkRequest:
+    SignupRequest:
       type: object
       properties:
-        title:
+        username:
           type: string
-        url:
+          minLength: 3
+          maxLength: 20
+        password:
           type: string
-        description:
+          minLength: 6
+        displayName:
           type: string
-          nullable: true
-        category:
-          type: string
-          nullable: true
-        icon:
-          type: string
-          nullable: true
-        color:
-          type: string
-          nullable: true
+          maxLength: 30
       required:
-        - title
-        - url
-    UpdateBookmarkRequest:
+        - username
+        - password
+        - displayName
+    LoginRequest:
       type: object
       properties:
-        title:
+        username:
           type: string
-        url:
+        password:
           type: string
-        description:
+      required:
+        - username
+        - password
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - user
+    UpdateUserRequest:
+      type: object
+      properties:
+        displayName:
           type: string
-          nullable: true
-        category:
+          maxLength: 30
+        avatarColor:
           type: string
-          nullable: true
-        icon:
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+        - success
+    ErrorResponse:
+      type: object
+      properties:
+        error:
           type: string
-          nullable: true
-        color:
-          type: string
-          nullable: true
+      required:
+        - error

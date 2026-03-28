@@ -9,31 +9,45 @@ export interface HealthStatus {
   status: string;
 }
 
-export interface Bookmark {
+export interface User {
   id: number;
-  title: string;
-  url: string;
-  description?: string | null;
-  category?: string | null;
-  icon?: string | null;
-  color?: string | null;
+  username: string;
+  displayName: string;
+  avatarColor: string;
   createdAt: string;
 }
 
-export interface CreateBookmarkRequest {
-  title: string;
-  url: string;
-  description?: string | null;
-  category?: string | null;
-  icon?: string | null;
-  color?: string | null;
+export interface SignupRequest {
+  /**
+   * @minLength 3
+   * @maxLength 20
+   */
+  username: string;
+  /** @minLength 6 */
+  password: string;
+  /** @maxLength 30 */
+  displayName: string;
 }
 
-export interface UpdateBookmarkRequest {
-  title?: string;
-  url?: string;
-  description?: string | null;
-  category?: string | null;
-  icon?: string | null;
-  color?: string | null;
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  user: User;
+}
+
+export interface UpdateUserRequest {
+  /** @maxLength 30 */
+  displayName?: string;
+  avatarColor?: string;
+}
+
+export interface SuccessResponse {
+  success: boolean;
+}
+
+export interface ErrorResponse {
+  error: string;
 }

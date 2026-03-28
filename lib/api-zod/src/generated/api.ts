@@ -8,7 +8,6 @@
 import * as zod from "zod";
 
 /**
- * Returns server health status
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
@@ -16,62 +15,71 @@ export const HealthCheckResponse = zod.object({
 });
 
 /**
- * @summary List all bookmarks
+ * @summary Create a new account
  */
-export const ListBookmarksResponseItem = zod.object({
+export const signupBodyUsernameMin = 3;
+export const signupBodyUsernameMax = 20;
+
+export const signupBodyPasswordMin = 6;
+
+export const signupBodyDisplayNameMax = 30;
+
+export const SignupBody = zod.object({
+  username: zod.string().min(signupBodyUsernameMin).max(signupBodyUsernameMax),
+  password: zod.string().min(signupBodyPasswordMin),
+  displayName: zod.string().max(signupBodyDisplayNameMax),
+});
+
+/**
+ * @summary Log in
+ */
+export const LoginBody = zod.object({
+  username: zod.string(),
+  password: zod.string(),
+});
+
+export const LoginResponse = zod.object({
+  user: zod.object({
+    id: zod.number(),
+    username: zod.string(),
+    displayName: zod.string(),
+    avatarColor: zod.string(),
+    createdAt: zod.date(),
+  }),
+});
+
+/**
+ * @summary Log out
+ */
+export const LogoutResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Get current user
+ */
+export const GetMeResponse = zod.object({
   id: zod.number(),
-  title: zod.string(),
-  url: zod.string(),
-  description: zod.string().nullish(),
-  category: zod.string().nullish(),
-  icon: zod.string().nullish(),
-  color: zod.string().nullish(),
+  username: zod.string(),
+  displayName: zod.string(),
+  avatarColor: zod.string(),
   createdAt: zod.date(),
 });
-export const ListBookmarksResponse = zod.array(ListBookmarksResponseItem);
 
 /**
- * @summary Create a new bookmark
+ * @summary Update current user profile
  */
-export const CreateBookmarkBody = zod.object({
-  title: zod.string(),
-  url: zod.string(),
-  description: zod.string().nullish(),
-  category: zod.string().nullish(),
-  icon: zod.string().nullish(),
-  color: zod.string().nullish(),
+export const updateMeBodyDisplayNameMax = 30;
+
+export const UpdateMeBody = zod.object({
+  displayName: zod.string().max(updateMeBodyDisplayNameMax).optional(),
+  avatarColor: zod.string().optional(),
 });
 
-/**
- * @summary Delete a bookmark
- */
-export const DeleteBookmarkParams = zod.object({
-  id: zod.coerce.number(),
-});
-
-/**
- * @summary Update a bookmark
- */
-export const UpdateBookmarkParams = zod.object({
-  id: zod.coerce.number(),
-});
-
-export const UpdateBookmarkBody = zod.object({
-  title: zod.string().optional(),
-  url: zod.string().optional(),
-  description: zod.string().nullish(),
-  category: zod.string().nullish(),
-  icon: zod.string().nullish(),
-  color: zod.string().nullish(),
-});
-
-export const UpdateBookmarkResponse = zod.object({
+export const UpdateMeResponse = zod.object({
   id: zod.number(),
-  title: zod.string(),
-  url: zod.string(),
-  description: zod.string().nullish(),
-  category: zod.string().nullish(),
-  icon: zod.string().nullish(),
-  color: zod.string().nullish(),
+  username: zod.string(),
+  displayName: zod.string(),
+  avatarColor: zod.string(),
   createdAt: zod.date(),
 });
