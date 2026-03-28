@@ -1,0 +1,50 @@
+2026-03-28T02:44:33.864916939Z ✓ built in 3.46s
+2026-03-28T02:44:34.279355691Z 
+2026-03-28T02:44:34.279376282Z > @workspace/api-server@0.0.0 build /opt/render/project/src/artifacts/api-server
+2026-03-28T02:44:34.279380572Z > node ./build.mjs
+2026-03-28T02:44:34.279383682Z 
+2026-03-28T02:44:34.730448332Z 
+2026-03-28T02:44:34.730476233Z   dist/index.mjs                       2.2mb ⚠️
+2026-03-28T02:44:34.730482034Z   dist/pino-worker.mjs               153.4kb
+2026-03-28T02:44:34.730486954Z   dist/pino-file.mjs                 142.1kb
+2026-03-28T02:44:34.730491754Z   dist/pino-pretty.mjs               114.6kb
+2026-03-28T02:44:34.730496985Z   dist/thread-stream-worker.mjs        7.3kb
+2026-03-28T02:44:34.730500595Z   dist/index.mjs.map                   3.8mb
+2026-03-28T02:44:34.730503625Z   dist/pino-worker.mjs.map           256.9kb
+2026-03-28T02:44:34.730506675Z   dist/pino-file.mjs.map             229.0kb
+2026-03-28T02:44:34.730509775Z   dist/pino-pretty.mjs.map           203.9kb
+2026-03-28T02:44:34.730512916Z   dist/thread-stream-worker.mjs.map   12.0kb
+2026-03-28T02:44:34.730515866Z 
+2026-03-28T02:44:34.730519536Z ⚡ Done in 393ms
+2026-03-28T02:44:35.776744377Z ==> Uploading build...
+2026-03-28T02:44:46.223730338Z ==> Uploaded in 5.9s. Compression took 4.5s
+2026-03-28T02:44:46.258069394Z ==> Build successful 🎉
+2026-03-28T02:44:49.636128368Z ==> Deploying...
+2026-03-28T02:44:49.706139794Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-03-28T02:45:16.567371294Z > @workspace/api-server@0.0.0 start /opt/render/project/src/artifacts/api-server
+2026-03-28T02:45:16.567376535Z > node --enable-source-maps ./dist/index.mjs
+2026-03-28T02:45:16.567379465Z 
+2026-03-28T02:45:18.865802892Z /opt/render/project/src/node_modules/.pnpm/path-to-regexp@8.3.0/node_modules/path-to-regexp/src/index.ts:225
+2026-03-28T02:45:18.865825853Z       throw new PathError(`Missing parameter name at index ${index}`, str);
+2026-03-28T02:45:18.865829843Z             ^
+2026-03-28T02:45:18.865832423Z 
+2026-03-28T02:45:18.865835243Z PathError [TypeError]: Missing parameter name at index 1: *; visit https://git.new/pathToRegexpError for info
+2026-03-28T02:45:18.865839093Z     at name (/opt/render/project/src/node_modules/.pnpm/path-to-regexp@8.3.0/node_modules/path-to-regexp/src/index.ts:225:13)
+2026-03-28T02:45:18.865841713Z     at parse (/opt/render/project/src/node_modules/.pnpm/path-to-regexp@8.3.0/node_modules/path-to-regexp/src/index.ts:242:62)
+2026-03-28T02:45:18.865844793Z     at pathToRegexp (/opt/render/project/src/node_modules/.pnpm/path-to-regexp@8.3.0/node_modules/path-to-regexp/src/index.ts:480:54)
+2026-03-28T02:45:18.865847343Z     at Object.match (/opt/render/project/src/node_modules/.pnpm/path-to-regexp@8.3.0/node_modules/path-to-regexp/src/index.ts:438:28)
+2026-03-28T02:45:18.865850013Z     at matcher (/opt/render/project/src/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:86:23)
+2026-03-28T02:45:18.865852543Z     at new Layer (/opt/render/project/src/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:93:62)
+2026-03-28T02:45:18.865855133Z     at Function.route (/opt/render/project/src/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:428:17)
+2026-03-28T02:45:18.865857793Z     at Function.route (/opt/render/project/src/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:257:22)
+2026-03-28T02:45:18.865860634Z     at Function.app2.<computed> (/opt/render/project/src/node_modules/.pnpm/express@5.2.1/node_modules/express/lib/application.js:478:22)
+2026-03-28T02:45:18.865863943Z     at <anonymous> (/opt/render/project/src/artifacts/api-server/src/app.ts:72:7) {
+2026-03-28T02:45:18.865867694Z   originalPath: '*'
+2026-03-28T02:45:18.865870484Z }
+2026-03-28T02:45:18.865873084Z 
+2026-03-28T02:45:18.865875784Z Node.js v22.22.0
+2026-03-28T02:45:19.067377898Z /opt/render/project/src/artifacts/api-server:
+2026-03-28T02:45:19.067423359Z  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/api-server@0.0.0 start: `node --enable-source-maps ./dist/index.mjs`
+2026-03-28T02:45:19.06742912Z Exit status 1
+2026-03-28T02:45:21.203242742Z ==> Exited with status 1
+2026-03-28T02:45:21.209979751Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
