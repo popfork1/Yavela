@@ -69,7 +69,7 @@ const dashboardDist = path.resolve(__dirname, "../../dashboard/dist/public");
 
 if (existsSync(dashboardDist)) {
   app.use(express.static(dashboardDist));
-  app.get("*", (_req, res) => {
+  app.get("/{*path}", (_req, res) => {
     res.sendFile(path.join(dashboardDist, "index.html"));
   });
 }
